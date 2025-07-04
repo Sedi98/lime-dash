@@ -11,7 +11,7 @@ import Alert from "@/components/shared/Alert";
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -56,7 +56,7 @@ const Register = () => {
         setError(data.error);
         setLoading(false);
       } else {
-        setSuccess(data.message);
+        
         setLoading(false);
       }
     } catch (error) {

@@ -12,7 +12,6 @@ const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,7 +39,7 @@ const Login = () => {
         setError(data.error);
         setLoading(false);
       } else {
-        setSuccess(data.message);
+        
         setLoading(false);
         setError("");
         router.push("/dash");

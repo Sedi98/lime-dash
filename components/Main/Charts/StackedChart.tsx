@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 
 
 const StackedChart = () => {
-  const [state, setState] = React.useState({
+  const [state] = useState({
           
             series: [{
               name: 'Inflation',
@@ -13,7 +13,7 @@ const StackedChart = () => {
             options: {
               chart: {
                 height: 350,
-                type: 'bar',
+                type: "bar" as "bar",
               },
               plotOptions: {
                 bar: {
@@ -69,7 +69,7 @@ const StackedChart = () => {
                 },
                 labels: {
                   show: false,
-                  formatter: function (val: string) {
+                  formatter: function (val: number) {
                     return val + "%";
                   }
                 }
@@ -79,7 +79,7 @@ const StackedChart = () => {
                 text: 'Monthly Inflation in Argentina, 2002',
                 floating: true,
                 offsetY: 330,
-                align: 'center',
+                align: "center" as "center",
                 style: {
                   color: '#444'
                 }

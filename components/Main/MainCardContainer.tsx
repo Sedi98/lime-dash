@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 import MainCardElement from "./MainCardElement";
 import { LuCircleDollarSign } from "react-icons/lu";

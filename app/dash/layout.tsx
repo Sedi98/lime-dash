@@ -1,9 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { FiMenu, FiX, FiLogOut } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 
 import { LuMonitorDot } from "react-icons/lu";
 import { FiShoppingCart } from "react-icons/fi";
