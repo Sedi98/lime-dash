@@ -1,78 +1,101 @@
+'use client'
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
-import { ApexOptions } from "apexcharts";
+
 
 const StackedChart = () => {
-  const [chartState] = useState<{
-    series: { name: string; data: number[] }[];
-    options: ApexOptions;
-  }>({
-    series: [
-      {
-        name: "Orders",
-        data: [44, 55, 41, 67, 22, 43],
-      },
-      {
-        name: "Revenue",
-        data: [13, 23, 20, 8, 13, 27],
-      },
-      //   {
-      //     name: 'PRODUCT C',
-      //     data: [11, 17, 15, 15, 21, 14]
-      //   },
-      //   {
-      //     name: 'PRODUCT D',
-      //     data: [21, 7, 25, 13, 22, 8]
-      //   }
-    ],
-    options: {
-      chart: {
-        type: "bar",
-        height: 350,
-        stacked: true,
-        stackType: "100%",
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: "bottom",
-              offsetX: -10,
-              offsetY: 0,
-            },
-          },
-        },
-      ],
-      xaxis: {
-        categories: [
-          "2011 Q1",
-          "2011 Q2",
-          "2011 Q3",
-          "2011 Q4",
-          "2012 Q1",
-          "2012 Q2",
+  const [state, setState] = React.useState({
           
-        ],
-      },
-      fill: {
-        opacity: 1,
-      },
-    //   legend: {
-    //     position: "none",
-    //     offsetX: 0,
-    //     offsetY: 50,
-    //   },
-    },
-  });
+            series: [{
+              name: 'Inflation',
+              data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+            }],
+            options: {
+              chart: {
+                height: 350,
+                type: 'bar',
+              },
+              plotOptions: {
+                bar: {
+                  borderRadius: 10,
+                  dataLabels: {
+                    position: 'top', // top, center, bottom
+                  },
+                }
+              },
+              dataLabels: {
+                enabled: true,
+                formatter: function (val: string) {
+                  return val + "%";
+                },
+                offsetY: -20,
+                style: {
+                  fontSize: '12px',
+                  colors: ["#304758"]
+                }
+              },
+              
+              xaxis: {
+                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                position: 'top',
+                axisBorder: {
+                  show: false
+                },
+                axisTicks: {
+                  show: false
+                },
+                crosshairs: {
+                  fill: {
+                    type: 'gradient',
+                    gradient: {
+                      colorFrom: '#D8E3F0',
+                      colorTo: '#BED1E6',
+                      stops: [0, 100],
+                      opacityFrom: 0.4,
+                      opacityTo: 0.5,
+                    }
+                  }
+                },
+                tooltip: {
+                  enabled: true,
+                }
+              },
+              yaxis: {
+                axisBorder: {
+                  show: true
+                },
+                axisTicks: {
+                  show: false,
+                },
+                labels: {
+                  show: false,
+                  formatter: function (val: string) {
+                    return val + "%";
+                  }
+                }
+              
+              },
+              title: {
+                text: 'Monthly Inflation in Argentina, 2002',
+                floating: true,
+                offsetY: 330,
+                align: 'center',
+                style: {
+                  color: '#444'
+                }
+              }
+            },
+          
+          
+        });
 
   return (
     <div className="app">
       <div className="row">
         <div className="mixed-chart">
           <Chart
-            options={chartState.options}
-            series={chartState.series}
+            options={state.options}
+            series={state.series}
             type="bar"
             width="500"
           />
