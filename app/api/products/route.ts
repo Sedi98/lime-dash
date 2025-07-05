@@ -75,6 +75,10 @@ export async function GET(req: NextRequest) {
       supabaseQuery = supabaseQuery.range(skip, skip + limit - 1);
     }
 
+
+    // show only visible elements not deleted one
+    supabaseQuery.eq("stock_visible", 0);
+
     // Execute query
     const { data: products, error, count } = await supabaseQuery;
 

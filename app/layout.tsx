@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import "@/localization/i18n";
 import { PaginationProvider } from "@/contexts/PaginationContext";
+import { SearchProvider } from "@/contexts/SearchContext";
 
 const DMSans = DM_Sans({
   weight: ["100", "200", "300", "400", "500", "700", "900"],
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${DMSans.className} antialiased`}>
-        <PaginationProvider>{children}</PaginationProvider>
+        <PaginationProvider>
+          <SearchProvider>{children}</SearchProvider>
+        </PaginationProvider>
       </body>
     </html>
   );

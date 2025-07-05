@@ -8,23 +8,24 @@ import type { Report } from "@/types/Reports";
 import { usePagination } from "@/contexts/PaginationContext";
 
 const Reports = () => {
-  const { activePage, setTotalPage, skip } = usePagination();
-  const [reports, setProducts] = useState<Report[]>([]);
-  const [limit] = useState(20);
+  const { activePage, setTotalPage, skip, setTotalItem, limit } = usePagination();
+  const [reports, setReports] = useState<Report[]>([]);
+  
 
   const fetchProducts = async () => {
     const response = await fetch(`/api/reports?limit=${limit}&skip=${skip}`);
     const data = await response.json();
-    setProducts(data.reports);
+    setReports(data.reports);
     console.log(data);
 
     setTotalPage(Math.ceil(data.total / limit));
+    setTotalItem(data.total);
   };
 
   useEffect(() => {
     document.body.scrollTop = 0;
     fetchProducts();
-  }, [activePage]);
+  }, [activePage, limit]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full">
       <PageHeader
@@ -58,8 +59,8 @@ const Reports = () => {
           className="mt-4"
         >
           {reports.map((report) => (
-            <Table.Row key={report?.sp_id} rowData={report}>
-              <Table.Cell>{report?.sp_id}</Table.Cell>
+            <Table.Row key={report?.order_stock_id} rowData={report}>
+              <Table.Cell>{report?.order_stock_id}</Table.Cell>
               <Table.Cell>
                 {" "}
                 <span className="text-sm">{report?.order_date}</span>

@@ -6,11 +6,12 @@ import React, { useState, useEffect } from "react";
 import { LuPencil } from "react-icons/lu";
 import type { Product } from "@/types/product";
 import { usePagination } from "@/contexts/PaginationContext";
+import PageTop from "@/components/shared/PageTop";
 
 const Products = () => {
-  const { totalPage, activePage, setActive, setTotalPage, skip, } = usePagination();
+  const { activePage, setTotalPage, skip, setTotalItem, limit } = usePagination();
   const [products, setProducts] = useState<Product[]>([]);
-  const [limit, setLimit] = useState(20);
+  
   
 
   const fetchProducts = async () => {
@@ -20,6 +21,7 @@ const Products = () => {
     console.log(data);
     
     setTotalPage(Math.ceil(data.total / limit));
+    setTotalItem(data.total);
   };
 
 
@@ -27,9 +29,9 @@ const Products = () => {
   useEffect(() => {
     document.body.scrollTop = 0;
     fetchProducts();
-  }, [activePage]);
+  }, [activePage, limit]);
   return (
-    <div className="p-6 space-y-6 overflow-auto h-full">
+    <div className="p-6 space-y-6 overflow-auto h-full w-full max-w-full">
       <PageHeader
         title="Məhsullar"
         pathNames={{ dash: "Dash", products: "Məhsullar" }}
@@ -37,6 +39,7 @@ const Products = () => {
       />
 
       <div className="cnt bg-base-100 rounded shadow max-w-7xl ">
+        <PageTop />
         <Table
           headers={[
             "ID",
@@ -53,7 +56,7 @@ const Products = () => {
           actionLabel={<LuPencil />}
           onActionClick={(user) => console.log("Viewing user:", user)}
           size="md"
-          className="mt-4"
+          
         >
           {products.map((product) => (
             <Table.Row key={product?.sp_id} rowData={product}>
