@@ -15,6 +15,7 @@ const Products = () => {
   
 
   const fetchProducts = async () => {
+    document.body.scrollTop = 0;
     const response = await fetch(`/api/products?limit=${limit}&skip=${skip}`);
     const data = await response.json();
     setProducts(data.products);
