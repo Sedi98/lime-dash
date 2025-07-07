@@ -6,56 +6,67 @@ import React, { useState, useEffect } from "react";
 import { LuPencil } from "react-icons/lu";
 import type { Expense } from "@/types/Expenses";
 import { usePagination } from "@/contexts/PaginationContext";
+import { useSearch } from "@/contexts/SearchContext";
+import PageTop from "@/components/shared/PageTop";
+import { useSpinner } from "@/contexts/SpinnerContext";
 
 const Products = () => {
-  const { totalPage, activePage, setActive, setTotalPage, skip, } = usePagination();
+   const { setIsLoading } = useSpinner();
+  const { query } = useSearch();
+  const { activePage, setTotalPage, skip, limit } = usePagination();
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [limit, setLimit] = useState(20);
-  
 
   const fetchProducts = async () => {
-    const response = await fetch(`/api/expenses?limit=${limit}&skip=${skip}`);
-    const data = await response.json();
-    setExpenses(data.expenses);
-    console.log(data);
-    
-    setTotalPage(Math.ceil(data.total / limit));
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`/api/expenses?limit=${limit}&skip=${skip}`);
+      const data = await response.json();
+
+      if (data && data.expenses) {
+        setExpenses(data.expenses);
+      }
+
+      if (data && data.total) {
+        setTotalPage(Math.ceil(data.total / limit));
+      }
+    } catch (error) {
+      console.error("Failed to fetch expenses:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-
 
   useEffect(() => {
     document.body.scrollTop = 0;
     fetchProducts();
-  }, [activePage]);
+  }, [activePage, limit, query]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full">
       <PageHeader
         title="Xərclər"
-        pathNames={{ dash: "Dash", reports: "Xərclər" }}
+        pathNames={{ dash: "Dash", expenses: "Xərclər" }}
         homeName={""}
       />
 
       <div className="cnt bg-base-100 rounded shadow max-w-7xl ">
+        <PageTop />
         <Table
-          headers={[
-            "ID",
-           "Tarix",
-            "Açıqlama",
-            "Amount",
-           
-          ]}
+          headers={["ID", "Tarix", "Açıqlama", "Amount"]}
           showCheckbox={true}
           showActions={true}
           actionLabel={<LuPencil />}
           onActionClick={(user) => console.log("Viewing user:", user)}
           size="md"
-          className="mt-4"
         >
           {expenses.map((expense) => (
             <Table.Row key={expense?.rasxod_id} rowData={expense}>
-              <Table.Cell className="!max-w-[100px]">{expense?.rasxod_id}</Table.Cell>
-              <Table.Cell className="!max-w-[100px]">{expense?.rasxod_day_date}</Table.Cell>
+              <Table.Cell className="!max-w-[100px]">
+                <span className="text-sm">{expense?.rasxod_id}</span>
+              </Table.Cell>
+              <Table.Cell className="!max-w-[100px]">
+                <span className="text-sm">{expense?.rasxod_day_date}</span>
+              </Table.Cell>
               <Table.Cell>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
@@ -69,7 +80,10 @@ const Products = () => {
                     </div> */}
                   </div>
                   <div>
-                    <div className="font-medium text-sm truncate max-w-xs" title={expense?.rasxod_description}>
+                    <div
+                      className="font-medium text-sm truncate max-w-xs"
+                      title={expense?.rasxod_description}
+                    >
                       {expense?.rasxod_description}
                     </div>
                   </div>
@@ -77,13 +91,20 @@ const Products = () => {
               </Table.Cell>
 
               <Table.Cell>
-                <div className="text-sm truncate max-w-[100px]" title={expense?.rasxod_money !== undefined ? expense.rasxod_money.toString() : undefined}>{(expense?.rasxod_money).toString()}</div>
+                <div
+                  className="text-sm truncate max-w-[100px]"
+                  title={
+                    expense?.rasxod_money !== undefined
+                      ? expense.rasxod_money.toString()
+                      : undefined
+                  }
+                >
+                  {(expense?.rasxod_money).toString()}
+                </div>
 
                 {/* <br />
                 <span className="badge badge-ghost badge-sm">{expense?.title}</span> */}
               </Table.Cell>
-
-              
             </Table.Row>
           ))}
         </Table>

@@ -15,25 +15,29 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   homeName = "Home",
 }) => {
   const pathname = usePathname();
-  
+
   // Generate breadcrumbs from pathname
   const breadcrumbs = () => {
     const paths = pathname.split("/").filter(Boolean);
-    const items = [];
-    
+    const items: {
+      name: string;
+      href: string | undefined;
+      isCurrent: boolean;
+    }[] = [];
+
     // Add home breadcrumb
-    items.push({
-      name: homeName,
-      href: "/dash",
-      isCurrent: paths.length === 0,
-    });
+    // items.push({
+    //   name: homeName,
+    //   href: "/dash",
+    //   isCurrent: paths.length === 0,
+    // });
 
     // Generate other breadcrumbs
     let currentPath = "";
     paths.forEach((path, index) => {
       currentPath += `/${path}`;
       const isLast = index === paths.length - 1;
-      
+
       items.push({
         name: pathNames[path] || path.replace(/-/g, " "),
         href: isLast ? undefined : currentPath,
@@ -56,7 +60,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
               {item.href ? (
                 <Link href={item.href}>{item.name}</Link>
               ) : (
-                <span className={item.isCurrent ? "text-primary font-medium" : ""}>
+                <span
+                  className={item.isCurrent ? "text-primary font-medium" : ""}
+                >
                   {item.name}
                 </span>
               )}

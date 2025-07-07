@@ -4,6 +4,7 @@ import "./globals.css";
 import "@/localization/i18n";
 import { PaginationProvider } from "@/contexts/PaginationContext";
 import { SearchProvider } from "@/contexts/SearchContext";
+import { SpinnerProvider } from "@/contexts/SpinnerContext";
 
 const DMSans = DM_Sans({
   weight: ["100", "200", "300", "400", "500", "700", "900"],
@@ -23,9 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${DMSans.className} antialiased`}>
-        <PaginationProvider>
-          <SearchProvider>{children}</SearchProvider>
-        </PaginationProvider>
+        <SpinnerProvider>
+          <PaginationProvider>
+            <SearchProvider>{children}</SearchProvider>
+          </PaginationProvider>
+        </SpinnerProvider>
       </body>
     </html>
   );

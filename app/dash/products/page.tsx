@@ -6,31 +6,44 @@ import React, { useState, useEffect } from "react";
 import { LuPencil } from "react-icons/lu";
 import type { Product } from "@/types/product";
 import { usePagination } from "@/contexts/PaginationContext";
+import { useSearch } from "@/contexts/SearchContext";
 import PageTop from "@/components/shared/PageTop";
+import { useSpinner } from "@/contexts/SpinnerContext";
 
 const Products = () => {
-  const { activePage, setTotalPage, skip, setTotalItem, limit } = usePagination();
+    const { setIsLoading } = useSpinner();
+  const { query } = useSearch();
+  const { activePage, setTotalPage, skip, setTotalItem, limit } =
+    usePagination();
   const [products, setProducts] = useState<Product[]>([]);
-  
   
 
   const fetchProducts = async () => {
-    document.body.scrollTop = 0;
-    const response = await fetch(`/api/products?limit=${limit}&skip=${skip}`);
-    const data = await response.json();
-    setProducts(data.products);
-    console.log(data);
-    
-    setTotalPage(Math.ceil(data.total / limit));
-    setTotalItem(data.total);
+    try {
+      setIsLoading(true);
+      document.body.scrollTop = 0;
+      const response = await fetch(
+        `/api/products?limit=${limit}&skip=${skip}${query ? `&q=${query}` : ""}`
+      );
+      const data = await response.json();
+      setProducts(data.products);
+      console.log(data);
+
+      setTotalPage(Math.ceil(data.total / limit));
+      setTotalItem(data.total);
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-
 
   useEffect(() => {
     document.body.scrollTop = 0;
     fetchProducts();
-  }, [activePage, limit]);
+
+   
+  }, [activePage, limit, query]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full w-full max-w-full">
       <PageHeader
@@ -57,7 +70,6 @@ const Products = () => {
           actionLabel={<LuPencil />}
           onActionClick={(user) => console.log("Viewing user:", user)}
           size="md"
-          
         >
           {products.map((product) => (
             <Table.Row key={product?.sp_id} rowData={product}>
@@ -75,7 +87,10 @@ const Products = () => {
                     </div>
                   </div>
                   <div>
-                    <div className="font-medium text-sm truncate max-w-xs" title={product?.stock_name}>
+                    <div
+                      className="font-medium text-sm truncate max-w-xs"
+                      title={product?.stock_name}
+                    >
                       {product?.stock_name}
                     </div>
                   </div>
@@ -83,7 +98,12 @@ const Products = () => {
               </Table.Cell>
 
               <Table.Cell>
-                <div className="text-sm truncate max-w-[100px]" title={product?.stock_phone_imei ?? undefined}>{product?.stock_phone_imei}</div>
+                <div
+                  className="text-sm truncate max-w-[100px]"
+                  title={product?.stock_phone_imei ?? undefined}
+                >
+                  {product?.stock_phone_imei}
+                </div>
 
                 {/* <br />
                 <span className="badge badge-ghost badge-sm">{product?.title}</span> */}

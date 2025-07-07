@@ -8,12 +8,15 @@ import { LuMonitorDot } from "react-icons/lu";
 import { FiShoppingCart } from "react-icons/fi";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import Nav from "@/components/shared/Nav";
+import Spinner from "@/components/shared/Spinner";
+import { useSpinner } from "@/contexts/SpinnerContext";
 
 export default function DashLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isLoading } = useSpinner();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -34,7 +37,7 @@ export default function DashLayout({
       href: "/dash/reports",
       icon: <MdOutlineAttachMoney />,
     },
-     {
+    {
       label: "Xərclər",
       href: "/dash/expenses",
       icon: <MdOutlineAttachMoney />,
@@ -47,6 +50,7 @@ export default function DashLayout({
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   return (
     <div className="flex min-h-screen w-screen">
+      {isLoading && <Spinner />}
       {/* Sidebar */}
       <aside
         className={`fixed md:static z-40 w-64 bg-base-100 border-r border-base-300 transform ${
@@ -99,7 +103,9 @@ export default function DashLayout({
 
         <Nav clickAction={toggleSidebar} />
 
-        <main className="bg-base-200 h-[calc(100vh-64px)] w-full">{children}</main>
+        <main className="bg-base-200 h-[calc(100vh-64px)] w-full">
+          {children}
+        </main>
       </div>
       <div
         className={` ${

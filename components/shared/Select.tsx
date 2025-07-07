@@ -30,6 +30,8 @@ const Select: React.FC<SelectProps> = ({
   placeholder = "Select an option",
   fullWidth = false,
   className = "",
+  value,
+  onChange,
   ...props
 }) => {
   // DaisyUI classes mapping
@@ -47,13 +49,15 @@ const Select: React.FC<SelectProps> = ({
 
   return (
     <select
-      value={props.value}
       className={`select ${sizeClasses[size]} ${variantClasses[variant]} ${
         color !== "ghost" ? `select-${color}` : ""
       } ${fullWidth ? "w-full" : ""} ${className}`}
+      // value={isControlled ? value : undefined}
+      value={value}
+      onChange={onChange}
       {...props}
     >
-      <option disabled value="" selected>
+      <option disabled value="">
         {placeholder}
       </option>
       {options.map((option) => (
@@ -61,6 +65,7 @@ const Select: React.FC<SelectProps> = ({
           key={option.value}
           value={option.value}
           disabled={option.disabled}
+          
         >
           {option.label}
         </option>

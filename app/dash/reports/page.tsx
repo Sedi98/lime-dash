@@ -6,35 +6,47 @@ import React, { useState, useEffect } from "react";
 import { LuPencil } from "react-icons/lu";
 import type { Report } from "@/types/Reports";
 import { usePagination } from "@/contexts/PaginationContext";
+import { useSearch } from "@/contexts/SearchContext";
+import PageTop from "@/components/shared/PageTop";
+import { useSpinner } from "@/contexts/SpinnerContext";
 
 const Reports = () => {
+  const { setIsLoading } = useSpinner();
+    const { query } = useSearch();
   const { activePage, setTotalPage, skip, setTotalItem, limit } = usePagination();
   const [reports, setReports] = useState<Report[]>([]);
   
 
-  const fetchProducts = async () => {
-    const response = await fetch(`/api/reports?limit=${limit}&skip=${skip}`);
-    const data = await response.json();
-    setReports(data.reports);
-    console.log(data);
+  const fetchReports = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/reports?limit=${limit}&skip=${skip}`);
+      const { reports, total } = await response.json();
 
-    setTotalPage(Math.ceil(data.total / limit));
-    setTotalItem(data.total);
+      setReports(reports);
+      setTotalPage(Math.ceil(total / limit));
+      setTotalItem(total);
+    } catch (error) {
+      console.error('Failed to fetch reports:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     document.body.scrollTop = 0;
-    fetchProducts();
-  }, [activePage, limit]);
+    fetchReports();
+  }, [activePage, limit, query]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full">
       <PageHeader
-        title="Məhsullar"
+        title="Hesabat"
         pathNames={{ dash: "Dash", reports: "Hesabatlar" }}
         homeName={""}
       />
 
       <div className="cnt bg-base-100 rounded shadow max-w-7xl ">
+        <PageTop />
         <Table
           headers={[
             "ID",
@@ -56,7 +68,7 @@ const Reports = () => {
           actionLabel={<LuPencil className="text-base" />}
           onActionClick={(user) => console.log("Viewing user:", user)}
           size="md"
-          className="mt-4"
+          
         >
           {reports.map((report) => (
             <Table.Row key={report?.order_stock_id} rowData={report}>

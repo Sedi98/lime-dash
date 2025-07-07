@@ -11,7 +11,6 @@ const PageFooter = () => {
         <p className="text-sm w-24">Element sayı</p>
         <Select
         className="w-24"
-        defaultValue="30"
         value={limit}
         onChange={(e) => setLimit(Number(e.target.value))}
         size="sm"
@@ -41,7 +40,7 @@ const PageFooter = () => {
         />
       </div>
 
-      <p className="text-sm">{totalItem}-dən {skip}-{skip + limit} arası </p>
+      <p className="text-sm">{totalItem}-dən {skip+1}-{skip + limit} arası </p>
 
       <Pagination shape="circle" />
     </div>
