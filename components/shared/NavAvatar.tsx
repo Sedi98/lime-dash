@@ -18,7 +18,7 @@ const NavAvatar = () => {
           />
         </div>
         <div className="flex flex-col ml-1 gap-0">
-          <span className="text-sm text-black">Sadi</span>
+          <span className="text-sm text-base-content/80">Sadi</span>
           <span className="text-xs text-base-content">Admin</span>
         </div>
       </div>

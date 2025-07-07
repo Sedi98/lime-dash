@@ -52,7 +52,7 @@ const Products = () => {
       <div className="cnt bg-base-100 rounded shadow max-w-7xl ">
         <PageTop />
         <Table
-          headers={["ID", "Tarix", "Açıqlama", "Amount"]}
+          headers={["ID", "Tarix", "Açıqlama", "Miqdar"]}
           showCheckbox={true}
           showActions={true}
           actionLabel={<LuPencil />}
@@ -91,7 +91,7 @@ const Products = () => {
               </Table.Cell>
 
               <Table.Cell>
-                <div
+                <span
                   className="text-sm truncate max-w-[100px]"
                   title={
                     expense?.rasxod_money !== undefined
@@ -99,8 +99,8 @@ const Products = () => {
                       : undefined
                   }
                 >
-                  {(expense?.rasxod_money).toString()}
-                </div>
+                  {(expense?.rasxod_money).toString()} 
+                </span> <span>&#8380;</span>
 
                 {/* <br />
                 <span className="badge badge-ghost badge-sm">{expense?.title}</span> */}
