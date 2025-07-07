@@ -20,7 +20,7 @@ const Reports = () => {
   const fetchReports = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/reports?limit=${limit}&skip=${skip}`);
+      const response = await fetch(`/api/reports?limit=${limit}&skip=${skip}${query ? `&q=${query}` : ""}`);
       const { reports, total } = await response.json();
 
       setReports(reports);

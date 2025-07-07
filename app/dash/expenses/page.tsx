@@ -16,11 +16,11 @@ const Products = () => {
   const { activePage, setTotalPage, skip, limit } = usePagination();
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
-  const fetchProducts = async () => {
+  const fetchExpenses = async () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/expenses?limit=${limit}&skip=${skip}`);
+      const response = await fetch(`/api/expenses?limit=${limit}&skip=${skip}${query ? `&q=${query}` : ""}`);
       const data = await response.json();
 
       if (data && data.expenses) {
@@ -39,7 +39,7 @@ const Products = () => {
 
   useEffect(() => {
     document.body.scrollTop = 0;
-    fetchProducts();
+    fetchExpenses();
   }, [activePage, limit, query]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full">
