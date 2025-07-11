@@ -21,7 +21,6 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      document.body.scrollTop = 0;
       const response = await fetch(
         `/api/products?limit=${limit}&skip=${skip}${query ? `&q=${query}` : ""}`
       );
@@ -53,7 +52,7 @@ const Products = () => {
       />
 
       <div className="cnt bg-base-100 rounded shadow max-w-7xl ">
-        <PageTop />
+        <PageTop type="Products" />
         <Table
           headers={[
             "ID",

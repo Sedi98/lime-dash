@@ -5,7 +5,14 @@ import { LuSearch, LuPlus, LuX } from "react-icons/lu";
 import Button from "./Button";
 import { useSearch } from "@/contexts/SearchContext";
 
-const PageTop = () => {
+import DayMonthFilter from "./DayMonthFilter";
+import DayMonthSelector from "./DayMonthSelector";
+
+interface PageTopTypes {
+  type: string;
+}
+
+const PageTop: React.FC<PageTopTypes> = ({ type }) => {
   const { query, setQuery, handleSearch } = useSearch();
   const [searchData, setSearchData] = React.useState<string>(query);
   return (
@@ -45,16 +52,11 @@ const PageTop = () => {
           </div>
         </form>
 
-        <Select
-          value={""}
-          onChange={(e) => console.log(e.target.value)} // Handle value change;
-          options={[
-            { value: "1", label: "Option 1" },
-            { value: "2", label: "Option 2" },
-          ]}
-          placeholder="Kateqoriya seç"
-          className="max-w-32"
-        />
+        {/* <CategoryFilter /> */}
+
+        {type?.toLowerCase() !== "products" && <DayMonthFilter data={[{name:'Gündəlik',value:'d'}, {name:'Aylıq',value:'m'}]} />}
+        {/* <DateFilter data={["Gündəlik", "Aylıq"]} /> */}
+        <DayMonthSelector />
       </div>
       <div>
         <Button startIcon={<LuPlus />}>Əlavə et </Button>

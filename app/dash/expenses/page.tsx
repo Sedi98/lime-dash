@@ -50,7 +50,7 @@ const Products = () => {
       />
 
       <div className="cnt bg-base-100 rounded shadow max-w-7xl ">
-        <PageTop />
+        <PageTop type="expenses" />
         <Table
           headers={["ID", "Tarix", "Açıqlama", "Miqdar"]}
           showCheckbox={true}
