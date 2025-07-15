@@ -6,6 +6,7 @@ import { PaginationProvider } from "@/contexts/PaginationContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { SpinnerProvider } from "@/contexts/SpinnerContext";
 import { DateFilterProvider } from "@/contexts/DateFilterContext";
+import { UserProvider } from "@/contexts/UserContext";
 
 const DMSans = DM_Sans({
   weight: ["100", "200", "300", "400", "500", "700", "900"],
@@ -28,7 +29,9 @@ export default function RootLayout({
         <SpinnerProvider>
           <PaginationProvider>
             <DateFilterProvider>
-              <SearchProvider>{children}</SearchProvider>
+              <SearchProvider>
+                <UserProvider>{children}</UserProvider>
+              </SearchProvider>
             </DateFilterProvider>
           </PaginationProvider>
         </SpinnerProvider>

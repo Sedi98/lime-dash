@@ -24,6 +24,7 @@ const allowedColumns = [
   "last_edited_date",
   "sync_status",
   "sync_updated_at",
+  "category_data:products_category_list!inner(stock_category(category_name))",
 ];
 
 export async function GET(req: NextRequest) {
@@ -74,7 +75,6 @@ export async function GET(req: NextRequest) {
     if (limit > 0) {
       supabaseQuery = supabaseQuery.range(skip, skip + limit - 1);
     }
-
 
     // show only visible elements not deleted one
     supabaseQuery.eq("stock_visible", 0);

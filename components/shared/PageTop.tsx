@@ -68,7 +68,7 @@ const PageTop: React.FC<PageTopTypes> = ({ type }) => {
         {/* <DateFilter data={["Gündəlik", "Aylıq"]} /> */}
       </div>
       <div>
-        <Button startIcon={<LuPlus />}>Əlavə et </Button>
+        <Button disabled startIcon={<LuPlus />}>Əlavə et </Button>
       </div>
     </div>
   );

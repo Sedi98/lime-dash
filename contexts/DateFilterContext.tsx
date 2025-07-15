@@ -45,7 +45,6 @@ export const DateFilterProvider = ({
     const day = `0${date.getDate()}`.slice(-2);
     const month = `0${date.getMonth() + 1}`.slice(-2);
     const year = date.getFullYear();
-    console.log(`${day}.${month}.${year}`);
     return `${day}.${month}.${year}`;
   };
 
@@ -53,7 +52,6 @@ export const DateFilterProvider = ({
     const date = new Date();
     const month = `0${date.getMonth() + 1}`.slice(-2);
     const year = date.getFullYear();
-    console.log(month, year);
 
     return `${month}.${year}`;
   };

@@ -1,8 +1,11 @@
 import Link from "next/link";
 import React from "react";
 import { LuSettings2, LuUser, LuLogOut } from "react-icons/lu";
+import { useUser } from "@/contexts/UserContext";
 
 const NavAvatar = () => {
+  const { user, logout } = useUser();
+
   return (
     <div className="dropdown dropdown-end">
       <div
@@ -18,7 +21,9 @@ const NavAvatar = () => {
           />
         </div>
         <div className="flex flex-col ml-1 gap-0">
-          <span className="text-sm text-base-content/80">Sadi</span>
+          <span className="text-sm text-base-content/80">
+            {user?.user_metadata?.first_name}
+          </span>
           <span className="text-xs text-base-content">Admin</span>
         </div>
       </div>
@@ -34,18 +39,21 @@ const NavAvatar = () => {
           </Link>
         </li>
         <li>
-         <Link href={"/profile"} className="flex gap-2 text-sm">
-             <LuSettings2 />
+          <Link href={"/profile"} className="flex gap-2 text-sm">
+            <LuSettings2 />
             <span>Settings</span>
             {/* <span className="badge">New</span> */}
           </Link>
         </li>
         <li>
-        <Link href={"/profile"} className="flex gap-2 text-sm text-error hover:bg-error/30">
+          <div
+            onClick={logout}
+            className="flex gap-2 text-sm text-error hover:bg-error/30"
+          >
             <LuLogOut />
             <span>Logout</span>
             {/* <span className="badge">New</span> */}
-          </Link>
+          </div>
         </li>
       </ul>
     </div>

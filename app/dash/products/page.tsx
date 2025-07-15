@@ -40,10 +40,6 @@ const Products = () => {
   useEffect(() => {
     document.body.scrollTop = 0;
     fetchProducts();
-
-    
-
-   
   }, [activePage, limit, query]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full w-full max-w-full">
@@ -112,7 +108,7 @@ const Products = () => {
 
               <Table.Cell>
                 {" "}
-                <span className="text-sm">{product?.product_category}</span>
+                <span className="text-sm">{product?.category_data[0].stock_category.category_name}</span>
               </Table.Cell>
               <Table.Cell>
                 {" "}

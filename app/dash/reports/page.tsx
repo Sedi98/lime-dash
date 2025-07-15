@@ -66,6 +66,8 @@ const Reports = () => {
       setDateType("");
       setSelectedDate("");// Reset selected date
       setSelectedMonthDate("");// Reset selected month
+      setAvailableDates([]);// Reset available dates
+      setAvailableMonthDates([]);// Reset available month dates
       
     };
   }, []);
