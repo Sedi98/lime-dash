@@ -10,6 +10,16 @@ const DayMonthFilter: React.FC<DayMonthFilterProps> = ({ data }) => {
 
   return (
     <div className="join">
+      <input
+          
+          className="join-item btn"
+          type="radio"
+          name="options"
+          value={""}
+          checked={dateType === ""}
+          aria-label={"All"}
+          onChange={() => setDateType("")}
+        />
       {data.map((item: any, index) => (
         <input
           key={index}

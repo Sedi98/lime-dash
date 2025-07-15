@@ -33,7 +33,7 @@ export const DateFilterProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [dateType, setDateType] = useState<string>("d");
+  const [dateType, setDateType] = useState<string>("");
 
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedMonthDate, setSelectedMonthDate] = useState<string>("");

@@ -41,6 +41,8 @@ const Products = () => {
     document.body.scrollTop = 0;
     fetchProducts();
 
+    
+
    
   }, [activePage, limit, query]);
   return (

@@ -9,9 +9,20 @@ import { usePagination } from "@/contexts/PaginationContext";
 import { useSearch } from "@/contexts/SearchContext";
 import PageTop from "@/components/shared/PageTop";
 import { useSpinner } from "@/contexts/SpinnerContext";
+import { useDateFilter } from "@/contexts/DateFilterContext";
 
 const Products = () => {
-   const { setIsLoading } = useSpinner();
+  const { setIsLoading } = useSpinner();
+  const {
+    dateType,
+    selectedDate,
+    selectedMonthDate,
+    setAvailableDates,
+    setAvailableMonthDates,
+    setDateType,
+    setSelectedDate,
+    setSelectedMonthDate,
+  } = useDateFilter();
   const { query } = useSearch();
   const { activePage, setTotalPage, skip, limit } = usePagination();
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -20,15 +31,31 @@ const Products = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/expenses?limit=${limit}&skip=${skip}${query ? `&q=${query}` : ""}`);
-      const data = await response.json();
+      const params = new URLSearchParams({
+        limit: limit.toString(),
+        skip: skip.toString(),
+        ...(query && { q: query }),
+      });
 
-      if (data && data.expenses) {
-        setExpenses(data.expenses);
+      if (dateType === "d") {
+        params.set("date", selectedDate);
+      }
+      if (dateType === "m") {
+        params.set("month", selectedMonthDate);
       }
 
-      if (data && data.total) {
-        setTotalPage(Math.ceil(data.total / limit));
+      const response = await fetch(`/api/expenses?${params.toString()}`);
+      const { expenses, total, available_dates, available_months } =
+        await response.json();
+
+      if (expenses) {
+        setExpenses(expenses);
+        setAvailableDates(available_dates);
+        setAvailableMonthDates(available_months);
+      }
+
+      if (total !== undefined) {
+        setTotalPage(Math.ceil(total / limit));
       }
     } catch (error) {
       console.error("Failed to fetch expenses:", error);
@@ -36,11 +63,18 @@ const Products = () => {
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    return () => {
+      setDateType("");
+      setSelectedDate(""); // Reset selected date
+      setSelectedMonthDate(""); // Reset selected month
+    };
+  }, []);
 
   useEffect(() => {
     document.body.scrollTop = 0;
     fetchExpenses();
-  }, [activePage, limit, query]);
+  }, [activePage, limit, query, dateType, selectedDate, selectedMonthDate]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full">
       <PageHeader
@@ -99,9 +133,9 @@ const Products = () => {
                       : undefined
                   }
                 >
-                  {(expense?.rasxod_money).toString()} 
-                </span> <span>&#8380;</span>
-
+                  {(expense?.rasxod_money).toString()}
+                </span>{" "}
+                <span>&#8380;</span>
                 {/* <br />
                 <span className="badge badge-ghost badge-sm">{expense?.title}</span> */}
               </Table.Cell>

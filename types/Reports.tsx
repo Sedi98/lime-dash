@@ -18,6 +18,8 @@ export interface Report {
   transaction_id: string | null | number;
   has_editable: number;
   max_refaund_quantity: number;
+  user_control: { user_name: string };
+  payment_method_list: { title: string };
 }
 
 export interface ReportsResponse {

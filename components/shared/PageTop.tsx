@@ -54,9 +54,18 @@ const PageTop: React.FC<PageTopTypes> = ({ type }) => {
 
         {/* <CategoryFilter /> */}
 
-        {type?.toLowerCase() !== "products" && <DayMonthFilter data={[{name:'Gündəlik',value:'d'}, {name:'Aylıq',value:'m'}]} />}
+        {type?.toLowerCase() !== "products" && (
+          <>
+            <DayMonthSelector />{" "}
+            <DayMonthFilter
+              data={[
+                { name: "Gündəlik", value: "d" },
+                { name: "Aylıq", value: "m" },
+              ]}
+            />
+          </>
+        )}
         {/* <DateFilter data={["Gündəlik", "Aylıq"]} /> */}
-        <DayMonthSelector />
       </div>
       <div>
         <Button startIcon={<LuPlus />}>Əlavə et </Button>

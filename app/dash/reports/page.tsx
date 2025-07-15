@@ -18,6 +18,9 @@ const Reports = () => {
     selectedMonthDate,
     setAvailableDates,
     setAvailableMonthDates,
+    setDateType,
+    setSelectedDate,
+    setSelectedMonthDate
   } = useDateFilter();
   const { setIsLoading } = useSpinner();
   const { query } = useSearch();
@@ -50,6 +53,7 @@ const Reports = () => {
       setAvailableMonthDates(available_months);
       setTotalPage(Math.ceil(total / limit));
       setTotalItem(total);
+      console.log(reports);
     } catch (error) {
       console.error("Failed to fetch reports:", error);
     } finally {
@@ -58,8 +62,19 @@ const Reports = () => {
   };
 
   useEffect(() => {
+    return () => {
+      setDateType("");
+      setSelectedDate("");// Reset selected date
+      setSelectedMonthDate("");// Reset selected month
+      
+    };
+  }, []);
+
+  useEffect(() => {
     document.body.scrollTop = 0;
     fetchReports();
+
+    
   }, [activePage, limit, query, dateType, selectedDate, selectedMonthDate]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full">
@@ -183,13 +198,15 @@ const Reports = () => {
                   <Table.Cell>
                     {" "}
                     <span className="text-sm">
-                      {report?.payment_method}{" "}
+                      {report?.payment_method_list.title}{" "}
                     </span>{" "}
                   </Table.Cell>
 
                   <Table.Cell>
                     {" "}
-                    <span className="text-sm">{report?.sales_man} </span>{" "}
+                    <span className="text-sm">
+                      {report?.user_control.user_name}{" "}
+                    </span>{" "}
                   </Table.Cell>
                 </Table.Row>
               ))}

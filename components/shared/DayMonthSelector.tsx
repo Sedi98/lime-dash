@@ -16,12 +16,14 @@ const DayMonthSelector = () => {
     <div>
       {(dateType === "d" && (
         <Select
-          options={availableDates?.map((date: string) => ({
-            value: date,
-            label: date,
-          })) || []}
+          options={
+            availableDates?.map((date: string) => ({
+              value: date,
+              label: date,
+            })) || []
+          }
           placeholder="Tarix seç"
-          value={selectedDate}
+          value={selectedDate ? selectedDate : ""}
           onChange={(e) => setSelectedDate(e.target.value)}
         />
       )) ||
@@ -33,7 +35,7 @@ const DayMonthSelector = () => {
                 label: date,
               })) || []
             }
-            value={selectedMonthDate}
+            value={selectedMonthDate ? selectedMonthDate : ""}
             onChange={(e) => setSelectedMonthDate(e.target.value)}
             placeholder="Tarix seç"
           />

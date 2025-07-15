@@ -9,7 +9,7 @@ const allowedColumns = [
   "order_stock_total_price", "order_total_profit", "order_date", 
   "order_who_buy", "order_my_date", "stock_order_visible", 
   "order_seller_name", "payment_method", "sales_man", "transaction_id", 
-  "has_editable", "max_refaund_quantity"
+  "has_editable", "max_refaund_quantity", "user_control(user_name)", "payment_method_list(title)"
 ];
 
 export async function GET(req: NextRequest) {
