@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   const select = searchParams.get("select");
   const date = searchParams.get("date");
   const month = searchParams.get("month");
-  const sortBy = searchParams.get("sortBy") || "rasxod_day_date";
+  const sortBy = searchParams.get("sortBy") || "rasxod_id";
   const order = searchParams.get("order") || "desc";
 
   const supabase = await createClient();
@@ -76,44 +76,7 @@ export async function GET(req: NextRequest) {
     if (expensesError) throw expensesError;
     if (!expenses) throw new Error("No expenses data found");
 
-    // Get unique dates and months for filters
-    const datesPromise = supabase
-      .from("rasxod")
-      .select("rasxod_day_date")
-      .neq("rasxod_day_date", null)
-      .order("rasxod_day_date", { ascending: true });
-
-    const monthsPromise = supabase
-      .from("rasxod")
-      .select("rasxod_year_date")
-      .neq("rasxod_year_date", null)
-      .order("rasxod_year_date", { ascending: true });
-
-    // Execute both metadata queries in parallel
-    const [datesResult, monthsResult] = await Promise.all([
-      datesPromise,
-      monthsPromise
-    ]);
-
-    if (datesResult.error) console.error("Dates error:", datesResult.error);
-    if (monthsResult.error) console.error("Months error:", monthsResult.error);
-
-    // Extract unique dates and months
-    const uniqueDates = Array.from(
-      new Set(
-        (datesResult.data || [])
-          .map(item => item.rasxod_day_date)
-          .filter(Boolean)
-      )
-    );
-
-    const uniqueMonths = Array.from(
-      new Set(
-        (monthsResult.data || [])
-          .map(item => item.rasxod_year_date)
-          .filter(Boolean)
-      )
-    );
+   
 
     // Create and return typed response
     const response: ExpensesResponse = {
@@ -121,8 +84,7 @@ export async function GET(req: NextRequest) {
       total: count || 0,
       skip,
       limit: limit > 0 ? limit : count || 0,
-      available_dates: uniqueDates,
-      available_months: uniqueMonths
+    
     };
 
     return NextResponse.json(response, { status: 200 });

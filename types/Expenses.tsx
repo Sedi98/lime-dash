@@ -13,6 +13,5 @@ export interface ExpensesResponse {
   total: number;
   skip: number;
   limit: number;
-  available_dates: string[]; // dd.mm.yyyy format
-  available_months: string[]; // mm.yyyy format
+  
 }

@@ -50,6 +50,14 @@ export const DateFilterProvider = ({
   }, [dateType]);
 
 
+  useEffect(() => {
+    return () => {
+      setSelectedDate("");
+      setSelectedMonthDate("");
+    };
+  }, []);
+
+
   const handleDateChange = async (dateType: string) => {
     if (dateType === "d") {
       setSelectedDate(await getFullDate());

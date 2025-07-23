@@ -28,6 +28,4 @@ export interface ReportsResponse {
   total: number;
   skip: number;
   limit: number;
-  available_dates: string[]; // Array of dd.mm.yyyy strings
-  available_months: string[]; // Array of mm.yyyy strings
 }

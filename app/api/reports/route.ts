@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   const select = searchParams.get("select");
   const date = searchParams.get("date");
   const month = searchParams.get("month");
-  const sortBy = searchParams.get("sortBy")|| "order_datem";
+  const sortBy = searchParams.get("sortBy")|| "order_stock_id";
   const order = searchParams.get("order") || "desc";
 
   const supabase = await createClient();

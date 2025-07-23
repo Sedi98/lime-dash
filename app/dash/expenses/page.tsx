@@ -27,13 +27,12 @@ const Products = () => {
   const { activePage, setTotalPage, skip, limit } = usePagination();
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
-
   const fetchAvailableDates = async () => {
     try {
       const response = await fetch("/api/dates/expenses");
       const { available_dates, available_months } = await response.json();
-      setAvailableDates(available_dates);
-      setAvailableMonthDates(available_months);
+      setAvailableDates(available_dates.reverse());
+      setAvailableMonthDates(available_months.reverse());
     } catch (error) {
       console.error("Failed to fetch available dates:", error);
     }
@@ -57,8 +56,7 @@ const Products = () => {
       }
 
       const response = await fetch(`/api/expenses?${params.toString()}`);
-      const { expenses, total } =
-        await response.json();
+      const { expenses, total } = await response.json();
 
       if (expenses) {
         setExpenses(expenses);
@@ -80,6 +78,8 @@ const Products = () => {
       setDateType("");
       setSelectedDate(""); // Reset selected date
       setSelectedMonthDate(""); // Reset selected month
+
+      
     };
   }, []);
 

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
 
@@ -23,15 +23,16 @@ async function fetchAllData(
 
     if (data && data.length > 0) {
       // Type-safe extraction of column values
-      const values = data.flatMap(item => {
-        const value = column === "order_date" 
-        // @ts-ignore
-          ? item.order_date 
-        //   @ts-ignore
-          : item.order_my_date;
+      const values = data.flatMap((item) => {
+        const value =
+          column === "order_date"
+            ? // @ts-ignore
+              item.order_date
+            : //   @ts-ignore
+              item.order_my_date;
         return value ? [value] : [];
       });
-      
+
       allData = [...allData, ...values];
       page++;
     } else {
@@ -43,21 +44,27 @@ async function fetchAllData(
 }
 
 // Helper function to parse and sort date strings
-function sortDateStrings(dates: string[], format: 'date' | 'month'): string[] {
+function sortDateStrings(dates: string[], format: "date" | "month"): string[] {
   const uniqueDates = Array.from(new Set(dates));
-  
+
   return uniqueDates.sort((a, b) => {
-    if (format === 'date') {
-      const [dayA, monthA, yearA] = a.split('.');
-      const [dayB, monthB, yearB] = b.split('.');
-      const dateStrA = `${yearA.padStart(4, '0')}${monthA.padStart(2, '0')}${dayA.padStart(2, '0')}`;
-      const dateStrB = `${yearB.padStart(4, '0')}${monthB.padStart(2, '0')}${dayB.padStart(2, '0')}`;
+    if (format === "date") {
+      const [dayA, monthA, yearA] = a.split(".");
+      const [dayB, monthB, yearB] = b.split(".");
+      const dateStrA = `${yearA.padStart(4, "0")}${monthA.padStart(
+        2,
+        "0"
+      )}${dayA.padStart(2, "0")}`;
+      const dateStrB = `${yearB.padStart(4, "0")}${monthB.padStart(
+        2,
+        "0"
+      )}${dayB.padStart(2, "0")}`;
       return dateStrA.localeCompare(dateStrB);
     } else {
-      const [monthA, yearA] = a.split('.');
-      const [monthB, yearB] = b.split('.');
-      const monthStrA = `${yearA.padStart(4, '0')}${monthA.padStart(2, '0')}`;
-      const monthStrB = `${yearB.padStart(4, '0')}${monthB.padStart(2, '0')}`;
+      const [monthA, yearA] = a.split(".");
+      const [monthB, yearB] = b.split(".");
+      const monthStrA = `${yearA.padStart(4, "0")}${monthA.padStart(2, "0")}`;
+      const monthStrB = `${yearB.padStart(4, "0")}${monthB.padStart(2, "0")}`;
       return monthStrA.localeCompare(monthStrB);
     }
   });
@@ -70,27 +77,29 @@ export async function GET() {
     // Fetch all dates and months with pagination
     const [allDates, allMonths] = await Promise.all([
       fetchAllData(supabase, "order_date"),
-      fetchAllData(supabase, "order_my_date")
+      fetchAllData(supabase, "order_my_date"),
     ]);
 
     // Process and sort data
-    const uniqueDates = sortDateStrings(allDates, 'date');
-    const uniqueMonths = sortDateStrings(allMonths, 'month');
+    const uniqueDates = sortDateStrings(allDates, "date");
+    const uniqueMonths = sortDateStrings(allMonths, "month");
 
     // Create response with caching headers
-    const response = NextResponse.json({
-      available_dates: uniqueDates,
-      available_months: uniqueMonths
-    }, { status: 200 });
+    const response = NextResponse.json(
+      {
+        available_dates: uniqueDates,
+        available_months: uniqueMonths,
+      },
+      { status: 200 }
+    );
 
     // Set cache control headers (revalidate every 60 minutes)
     response.headers.set(
-      'Cache-Control',
-      'public, s-maxage=3600, stale-while-revalidate=3600'
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=3600"
     );
 
     return response;
-
   } catch (err: any) {
     console.error(err);
     return NextResponse.json(
