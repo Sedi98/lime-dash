@@ -28,6 +28,26 @@ const Reports = () => {
     usePagination();
   const [reports, setReports] = useState<Report[]>([]);
 
+
+  const fetchDates = async () => {
+    try {
+      setIsLoading(true);
+      const url = new URL("/api/dates", window.location.origin);
+      const response = await fetch(url);
+     
+      
+      const { available_dates, available_months } = await response.json();
+      console.log(available_dates, available_months);
+      
+      setAvailableDates(available_dates.reverse());
+      setAvailableMonthDates(available_months.reverse());
+    } catch (error) {
+      console.error("Failed to fetch dates:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const fetchReports = async () => {
     try {
       setIsLoading(true);
@@ -45,12 +65,12 @@ const Reports = () => {
       }
 
       const response = await fetch(url);
-      const { reports, total, available_dates, available_months } =
+      const { reports, total } =
         await response.json();
 
       setReports(reports);
-      setAvailableDates(available_dates);
-      setAvailableMonthDates(available_months);
+      // setAvailableDates(available_dates);
+      // setAvailableMonthDates(available_months);
       setTotalPage(Math.ceil(total / limit));
       setTotalItem(total);
       console.log(reports);
@@ -74,7 +94,9 @@ const Reports = () => {
 
   useEffect(() => {
     document.body.scrollTop = 0;
+    fetchDates();
     fetchReports();
+
 
     
   }, [activePage, limit, query, dateType, selectedDate, selectedMonthDate]);
@@ -167,14 +189,14 @@ const Reports = () => {
                   <Table.Cell>
                     {" "}
                     <span className="text-sm">
-                      {report?.order_stock_sprice} &#8376;
+                      {report?.stock_list.stock_first_price} &#8380;
                     </span>{" "}
                   </Table.Cell>
 
                   <Table.Cell>
                     {" "}
                     <span className="text-sm">
-                      {report?.order_stock_total_price} &#8380;
+                      {report?.stock_list.stock_second_price} &#8380;
                     </span>{" "}
                   </Table.Cell>
                   <Table.Cell>
@@ -183,7 +205,7 @@ const Reports = () => {
                       {(
                         report?.order_stock_total_price *
                         report?.order_total_profit
-                      ).toFixed(2)}{" "}
+                      ).toFixed(2)}{" "} &#8380;
                     </span>{" "}
                   </Table.Cell>
 
@@ -193,7 +215,7 @@ const Reports = () => {
                       {(
                         report?.order_stock_total_price *
                         report?.order_total_profit
-                      ).toFixed(2)}{" "}
+                      ).toFixed(2)}{" "} &#8380;
                     </span>{" "}
                   </Table.Cell>
 

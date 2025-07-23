@@ -9,7 +9,7 @@ const allowedColumns = [
   "order_stock_total_price", "order_total_profit", "order_date", 
   "order_who_buy", "order_my_date", "stock_order_visible", 
   "order_seller_name", "payment_method", "sales_man", "transaction_id", 
-  "has_editable", "max_refaund_quantity", "user_control(user_name)", "payment_method_list(title)"
+  "has_editable", "max_refaund_quantity", "user_control(user_name)", "payment_method_list(title), stock_list(stock_first_price, stock_second_price)",
 ];
 
 export async function GET(req: NextRequest) {
@@ -78,52 +78,13 @@ export async function GET(req: NextRequest) {
     if (reportsError) throw reportsError;
     if (!reports) throw new Error("No reports data found");
 
-    // Get unique dates and months for filters
-    const datesPromise = supabase
-      .from("stock_order_report")
-      .select("order_date")
-      .neq("order_date", null)
-      .order("order_date", { ascending: true });
-
-    const monthsPromise = supabase
-      .from("stock_order_report")
-      .select("order_my_date")
-      .neq("order_my_date", null)
-      .order("order_my_date", { ascending: true });
-
-    // Execute both metadata queries in parallel
-    const [datesResult, monthsResult] = await Promise.all([
-      datesPromise,
-      monthsPromise
-    ]);
-
-    if (datesResult.error) console.error("Dates error:", datesResult.error);
-    if (monthsResult.error) console.error("Months error:", monthsResult.error);
-
-    // Extract unique dates and months
-    const uniqueDates: ReportsResponse["available_dates"] = Array.from(
-      new Set(
-        (datesResult.data || [])
-          .map(item => item.order_date)
-          .filter(Boolean)
-      )
-    );
-
-    const uniqueMonths: ReportsResponse["available_months"] = Array.from(
-      new Set(
-        (monthsResult.data || [])
-          .map(item => item.order_my_date)
-          .filter(Boolean)
-      )
-    );
+    
 
     return NextResponse.json({
       reports: reports as unknown as Report[],
       total: count || 0,
       skip,
       limit: limit > 0 ? limit : count || 0,
-      available_dates: uniqueDates,
-      available_months: uniqueMonths
     }, { status: 200 });
 
   } catch (err: any) {

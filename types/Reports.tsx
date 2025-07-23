@@ -20,6 +20,7 @@ export interface Report {
   max_refaund_quantity: number;
   user_control: { user_name: string };
   payment_method_list: { title: string };
+  stock_list: { stock_first_price: number; stock_second_price: number };
 }
 
 export interface ReportsResponse {

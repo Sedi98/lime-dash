@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext, createContext, useState, useEffect } from "react";
+import { getMonthDate, getFullDate } from "@/utils/helpers/DateFunctions";
 
 type DateFilterContextType = {
   dateType: string;
@@ -40,30 +41,24 @@ export const DateFilterProvider = ({
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [availableMonthDates, setAvailableMonthDates] = useState<string[]>([]);
 
-  const getFullDate = () => {
-    const date = new Date();
-    const day = `0${date.getDate()}`.slice(-2);
-    const month = `0${date.getMonth() + 1}`.slice(-2);
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-  };
+  
 
-  const getMonthDate = () => {
-    const date = new Date();
-    const month = `0${date.getMonth() + 1}`.slice(-2);
-    const year = date.getFullYear();
-
-    return `${month}.${year}`;
-  };
+  
 
   useEffect(() => {
-    if (dateType === "d" && !selectedDate) {
-      setSelectedDate(getFullDate());
-    }
-    if (dateType === "m" && !selectedMonthDate) {
-      setSelectedMonthDate(getMonthDate());
-    }
+    handleDateChange(dateType);
   }, [dateType]);
+
+
+  const handleDateChange = async (dateType: string) => {
+    if (dateType === "d") {
+      setSelectedDate(await getFullDate());
+    } else if (dateType === "m") {
+      setSelectedMonthDate(await getMonthDate());
+    }
+    console.log(selectedDate, selectedMonthDate);
+    
+  };
 
   const values = {
     dateType,
