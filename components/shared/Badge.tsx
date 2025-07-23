@@ -47,15 +47,37 @@ const Badge: React.FC<BadgeProps> = ({
     xl: "badge-xl",
   };
 
+  const colorClasses = {
+    primary: "badge-primary",
+    secondary: "badge-secondary",
+    accent: "badge-accent",
+    info: "badge-info",
+    success: "badge-success",
+    warning: "badge-warning",
+    error: "badge-error",
+    neutral: "badge-neutral",
+  };
+
+  const textClasses = {
+    primary: "text-primary-content",
+    secondary: "text-secondary-content",
+    accent: "text-accent-content",
+    info: "text-info-content",
+    success: "text-success-content",
+    warning: "text-warning-content",
+    error: "text-error-content",
+    neutral: "text-neutral-content",
+  };
+
   // Variant classes
   const getVariantClasses = () => {
     switch (variant) {
       case "soft":
-        return `badge-soft badge-${color}`;
+        return `badge-soft ${colorClasses[color]} ${textClasses[color]}`;
       case "outline":
-        return `badge-outline badge-${color}`;
+        return `badge-outline ${colorClasses[color]} ${textClasses[color]}`;
       case "dash":
-        return `badge-dash border-dashed border-2 border-${color} text-${color} bg-transparent`;
+        return `badge-dash border-dashed border-2 border-${color} ${textClasses[color]} bg-transparent `;
       case "ghost":
         return "badge-ghost";
       case "empty":
@@ -63,7 +85,7 @@ const Badge: React.FC<BadgeProps> = ({
       case "neutral":
         return "badge-neutral";
       default: // solid
-        return `badge-${color}`;
+        return `${colorClasses[color]} ${textClasses[color]}`;
     }
   };
 

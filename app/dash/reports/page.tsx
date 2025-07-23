@@ -20,7 +20,7 @@ const Reports = () => {
     setAvailableMonthDates,
     setDateType,
     setSelectedDate,
-    setSelectedMonthDate
+    setSelectedMonthDate,
   } = useDateFilter();
   const { setIsLoading } = useSpinner();
   const { query } = useSearch();
@@ -28,17 +28,15 @@ const Reports = () => {
     usePagination();
   const [reports, setReports] = useState<Report[]>([]);
 
-
   const fetchDates = async () => {
     try {
       setIsLoading(true);
       const url = new URL("/api/dates", window.location.origin);
       const response = await fetch(url);
-     
-      
+
       const { available_dates, available_months } = await response.json();
       console.log(available_dates, available_months);
-      
+
       setAvailableDates(available_dates.reverse());
       setAvailableMonthDates(available_months.reverse());
     } catch (error) {
@@ -65,8 +63,7 @@ const Reports = () => {
       }
 
       const response = await fetch(url);
-      const { reports, total } =
-        await response.json();
+      const { reports, total } = await response.json();
 
       setReports(reports);
       // setAvailableDates(available_dates);
@@ -84,11 +81,10 @@ const Reports = () => {
   useEffect(() => {
     return () => {
       setDateType("");
-      setSelectedDate("");// Reset selected date
-      setSelectedMonthDate("");// Reset selected month
-      setAvailableDates([]);// Reset available dates
-      setAvailableMonthDates([]);// Reset available month dates
-      
+      setSelectedDate(""); // Reset selected date
+      setSelectedMonthDate(""); // Reset selected month
+      setAvailableDates([]); // Reset available dates
+      setAvailableMonthDates([]); // Reset available month dates
     };
   }, []);
 
@@ -96,9 +92,6 @@ const Reports = () => {
     document.body.scrollTop = 0;
     fetchDates();
     fetchReports();
-
-
-    
   }, [activePage, limit, query, dateType, selectedDate, selectedMonthDate]);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full">
@@ -205,7 +198,8 @@ const Reports = () => {
                       {(
                         report?.order_stock_total_price *
                         report?.order_total_profit
-                      ).toFixed(2)}{" "} &#8380;
+                      ).toFixed(2)}{" "}
+                      &#8380;
                     </span>{" "}
                   </Table.Cell>
 
@@ -215,7 +209,8 @@ const Reports = () => {
                       {(
                         report?.order_stock_total_price *
                         report?.order_total_profit
-                      ).toFixed(2)}{" "} &#8380;
+                      ).toFixed(2)}{" "}
+                      &#8380;
                     </span>{" "}
                   </Table.Cell>
 

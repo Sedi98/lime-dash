@@ -1,6 +1,5 @@
 import React from "react";
 import Input from "./Input";
-import Select from "./Select";
 import { LuSearch, LuPlus, LuX } from "react-icons/lu";
 import Button from "./Button";
 import { useSearch } from "@/contexts/SearchContext";
