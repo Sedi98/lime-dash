@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import MainCardContainer from "@/components/Main/MainCardContainer";
 import PageHeader from "@/components/shared/PageHeader";
 import React from "react";
+import DashDateFilter from '@/components/shared/DashDateFilter';
 
 const ChartsContainer = dynamic(
   () => import('@/components/Main/Charts/ChartsContainer'),
@@ -18,6 +19,7 @@ const DashMain = () => {
         homeName={"Dashboard"}
       />
       <div className="my-4"></div>
+      <DashDateFilter />
       <MainCardContainer />
       <ChartsContainer />
     </div>

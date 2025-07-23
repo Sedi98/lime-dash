@@ -10,6 +10,10 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import Nav from "@/components/shared/Nav";
 import Spinner from "@/components/shared/Spinner";
 import { useSpinner } from "@/contexts/SpinnerContext";
+import { useEffect } from 'react'
+import { themeChange } from 'theme-change'
+
+
 
 export default function DashLayout({
   children,
@@ -28,7 +32,7 @@ export default function DashLayout({
     },
 
     {
-      label: "Products",
+      label: "Mallar",
       href: "/dash/products",
       icon: <FiShoppingCart />,
     },
@@ -47,13 +51,19 @@ export default function DashLayout({
     { label: "Çıxış", href: "/logout", icon: <FiLogOut /> },
   ];
 
+
+  useEffect(() => {
+  themeChange(false)
+  // 👆 false parameter is required for react project
+}, [])
+
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   return (
-    <div className="flex min-h-screen w-screen">
+    <div className="flex min-h-screen w-screen" >
       {isLoading && <Spinner />}
       {/* Sidebar */}
       <aside
-        className={`fixed md:static z-40 w-64 bg-base-100 border-r border-base-300 transform ${
+        className={`fixed md:static z-40 w-64 min-w-64 bg-base-100 border-r border-base-300 transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0 h-screen`}
       >
@@ -90,7 +100,7 @@ export default function DashLayout({
       </aside>
 
       {/* Content */}
-      <div className="flex-1 ml-0 h-screen max-w-screen w-full ">
+      <div className="flex-1 ml-0 h-screen w-full  md:w-[calc(100%-256px)] ">
         {/* Top bar (mobile only)
         <div className="md:hidden p-4 border-b border-base-300 flex items-center justify-between bg-base-100">
           <button className="cursor-pointer" onClick={toggleSidebar}>

@@ -9,6 +9,7 @@ import {
 } from "react-icons/lu";
 import Input from "./Input";
 import NavAvatar from "./NavAvatar";
+import NavThemeSelector from "./NavThemeSelector";
 
 type Props = {
   clickAction?: () => void;
@@ -46,6 +47,9 @@ const Nav: React.FC<Props> = ({ clickAction }) => {
         {/* <button className="btn btn-ghost btn-circle">
           <LuSettings2 className="text-xl" />
         </button> */}
+
+        <NavThemeSelector />
+        
         <button className="btn btn-ghost btn-circle">
           <div className="indicator">
             <LuBell className="text-xl" />

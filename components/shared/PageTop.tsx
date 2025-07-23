@@ -16,10 +16,10 @@ const PageTop: React.FC<PageTopTypes> = ({ type }) => {
   const { query, setQuery, handleSearch } = useSearch();
   const [searchData, setSearchData] = React.useState<string>(query);
   return (
-    <div className="flex justify-between items-center p-6">
-      <div className="flex gap-2">
+    <div className="flex flex-col lg:flex-row gap-2 justify-between items-center p-6">
+      <div className="flex flex-col lg:flex-row gap-2 ">
         <form
-          className="flex gap-2 relative"
+          className="flex gap-2 relative "
           onSubmit={(e) => {
             e.preventDefault();
             handleSearch(searchData);
@@ -27,8 +27,8 @@ const PageTop: React.FC<PageTopTypes> = ({ type }) => {
         >
           <Input
             icon={<LuSearch />}
-            className="text-sm "
-            placeholder="Məhsullarda Axtar"
+            className="text-sm  "
+            placeholder="Axtar"
             value={searchData}
             changeAction={(e) => setSearchData(e.target.value)}
             type="text"
@@ -55,7 +55,8 @@ const PageTop: React.FC<PageTopTypes> = ({ type }) => {
         {/* <CategoryFilter /> */}
 
         {type?.toLowerCase() !== "products" && (
-          <>
+          <div className="flex gap-2 items-center justify-center">
+
             <DayMonthSelector />{" "}
             <DayMonthFilter
               data={[
@@ -63,7 +64,7 @@ const PageTop: React.FC<PageTopTypes> = ({ type }) => {
                 { name: "Aylıq", value: "m" },
               ]}
             />
-          </>
+          </div>
         )}
         {/* <DateFilter data={["Gündəlik", "Aylıq"]} /> */}
       </div>

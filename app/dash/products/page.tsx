@@ -74,14 +74,14 @@ const Products = () => {
               <Table.Cell>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
+                    {/* <div className="mask mask-squircle h-12 w-12">
                       <img
                         src={
                           "https://img.daisyui.com/images/profile/demo/3@94.webp"
                         }
                         alt={product?.stock_name}
                       />
-                    </div>
+                    </div> */}
                   </div>
                   <div>
                     <div
@@ -117,13 +117,13 @@ const Products = () => {
               <Table.Cell>
                 {" "}
                 <span className="text-sm">
-                  {product?.stock_first_price}
+                  {product?.stock_first_price} &#8380;
                 </span>{" "}
               </Table.Cell>
               <Table.Cell>
                 {" "}
                 <span className="text-sm">
-                  {product?.stock_second_price}
+                  {product?.stock_second_price} &#8380;
                 </span>{" "}
               </Table.Cell>
               <Table.Cell>

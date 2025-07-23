@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import type { Product } from "@/types/product";
+
 import { NextResponse, NextRequest } from "next/server";
+import type { Product } from "@/types/product";
 
 // Define allowed columns for validation
 const allowedColumns = [
