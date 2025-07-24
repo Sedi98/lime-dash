@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  LuSettings2,
-  LuMonitor,
   LuBell,
   LuMenu,
   LuSearch,

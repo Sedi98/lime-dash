@@ -33,6 +33,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [supabase] = useState(() => createClient());
 
   useEffect(() => {
+    console.log(pathname === "/auth/register");
+
     const getUser = async () => {
       const {
         data: { user },
@@ -40,7 +42,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       } = await supabase.auth.getUser();
 
       if (error) {
-        router.push("/auth/login");
+        pathname !== "/auth/register" && router.push("/auth/login");
       }
 
       setUser(user);
