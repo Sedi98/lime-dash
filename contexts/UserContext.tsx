@@ -12,45 +12,36 @@ type UserContextType = {
       last_name: string;
     };
   } | null;
-  loading: boolean;
-  error: Error | null;
+
   logout: () => void;
+  getUser: () => Promise<any>;
 };
 
 const UserContext = createContext<UserContextType>({
   user: null,
-  loading: true,
-  error: null,
+
   logout: () => {},
+  getUser: () => Promise.resolve(null),
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<any>(null);
+
   const [supabase] = useState(() => createClient());
 
-  useEffect(() => {
-    console.log(pathname === "/auth/register");
+  const getUser = async () => {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
 
-    const getUser = async () => {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-
-      if (error) {
-        pathname !== "/auth/register" && router.push("/auth/login");
-      }
-
-      setUser(user);
-      setError(error);
-      setLoading(false);
-    };
-    getUser();
-  }, [supabase, pathname]);
+    if (error) {
+      return null;
+    } else {
+      return user;
+    }
+  };
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -59,7 +50,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, loading, error, logout }}>
+    <UserContext.Provider value={{ getUser, logout, user }}>
       {children}
     </UserContext.Provider>
   );

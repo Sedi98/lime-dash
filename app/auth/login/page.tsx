@@ -61,6 +61,7 @@ const Login = () => {
             icon={<LuCircleX className="text-lg" />}
             variant="solid"
             color="error"
+            className="alert-error"
             description={error}
             onClose={() => setError("")}
           />

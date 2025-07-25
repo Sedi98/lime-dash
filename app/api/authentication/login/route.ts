@@ -29,6 +29,8 @@ export async function POST(req: NextRequest) {
         ? "Yanlış email və ya şifrə daxil edilib"
         : error.code?.includes("email_not_confirmed")
         ? "Email Təsdiqlənməyib"
+        : error.code?.includes("user_banned")
+        ? "Sizin hesabınız banlandı. Xahiş edirik qaydalara riayət edin"
         : "Giriş zamanı xəta baş verdi";
 
       return NextResponse.json({ error: translatedError }, { status: 401 });

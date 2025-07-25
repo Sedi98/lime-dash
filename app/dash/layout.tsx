@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { notFound, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FiLogOut } from "react-icons/fi";
 
@@ -10,19 +10,34 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import Nav from "@/components/shared/Nav";
 import Spinner from "@/components/shared/Spinner";
 import { useSpinner } from "@/contexts/SpinnerContext";
-import { useEffect } from 'react'
-import { themeChange } from 'theme-change'
-
-
+import { useUser } from "@/contexts/UserContext";
+import { themeChange } from "theme-change";
 
 export default function DashLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { getUser } = useUser();
+  const router = useRouter();
   const { isLoading } = useSpinner();
   const pathname = usePathname();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const checkUser = async () => {
+    const user = await getUser();
+    if (!user) {
+      router.push("not-found");
+    } else {
+      setShowContent(true);
+    }
+  };
 
   const menuItems = [
     {
@@ -51,15 +66,14 @@ export default function DashLayout({
     { label: "Çıxış", href: "/logout", icon: <FiLogOut /> },
   ];
 
-
   useEffect(() => {
-  themeChange(false)
-  // 👆 false parameter is required for react project
-}, [])
+    themeChange(false);
+    // 👆 false parameter is required for react project
+  }, []);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   return (
-    <div className="flex min-h-screen w-screen" >
+    <div className="flex min-h-screen w-screen">
       {isLoading && <Spinner />}
       {/* Sidebar */}
       <aside
@@ -67,15 +81,6 @@ export default function DashLayout({
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0 h-screen`}
       >
-        {/* <div className="px-2 border-b border-base-300 flex justify-between items-center md:hidden">
-          <Link href="/" className=" font-semibold text-primary text-2xl">
-            Lime Store
-          </Link>
-          <button className="cursor-pointer" onClick={toggleSidebar}>
-            <FiX size={24} />
-          </button>
-        </div> */}
-
         <div className="p-4 text-center">
           <Link href="/" className=" font-semibold text-primary text-2xl">
             Lime Store
@@ -101,21 +106,12 @@ export default function DashLayout({
 
       {/* Content */}
       <div className="flex-1 ml-0 h-screen w-full  md:w-[calc(100%-256px)] ">
-        {/* Top bar (mobile only)
-        <div className="md:hidden p-4 border-b border-base-300 flex items-center justify-between bg-base-100">
-          <button className="cursor-pointer" onClick={toggleSidebar}>
-            <FiMenu size={24} />
-          </button>
-          <Link href="/" className=" font-semibold text-primary text-2xl">
-            Vakant
-          </Link>
-        </div> */}
-
         <Nav clickAction={toggleSidebar} />
-
-        <main className="bg-base-200 h-[calc(100vh-64px)] w-full">
-          {children}
-        </main>
+        {showContent && (
+          <main className="bg-base-200 h-[calc(100vh-64px)] w-full">
+            {children}
+          </main>
+        )}
       </div>
       <div
         className={` ${
