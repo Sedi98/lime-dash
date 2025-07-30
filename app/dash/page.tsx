@@ -23,6 +23,8 @@ const DashMain = () => {
     setDateType,
     setSelectedDate,
     setSelectedMonthDate,
+    
+    
   } = useDateFilter();
 
   const { setIsLoading } = useSpinner();
@@ -73,6 +75,7 @@ const DashMain = () => {
   };
 
   useEffect(() => {
+    setDateType("m");
     return () => {
       setDateType("");
       setSelectedDate(""); // Reset selected date

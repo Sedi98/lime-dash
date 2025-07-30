@@ -34,7 +34,7 @@ const PageTop: React.FC<PageTopTypes> = ({ type }) => {
           />
           <div
             className="tooltip absolute right-1 bottom-1 z-20"
-            data-tip="Temizle"
+            data-tip="Təmizlə"
           >
             <Button
               onClick={(e) => {

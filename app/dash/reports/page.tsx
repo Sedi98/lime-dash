@@ -23,8 +23,8 @@ const Reports = () => {
     setSelectedMonthDate,
   } = useDateFilter();
   const { setIsLoading } = useSpinner();
-  const { query } = useSearch();
-  const { activePage, setTotalPage, skip, setTotalItem, limit } =
+  const { query , setQuery} = useSearch();
+  const { activePage, setTotalPage, skip, setTotalItem, limit,setActivePage } =
     usePagination();
   const [reports, setReports] = useState<Report[]>([]);
 
@@ -79,6 +79,8 @@ const Reports = () => {
   };
 
   useEffect(() => {
+    setQuery("");
+    setActivePage(1);
     return () => {
       setDateType("");
       setSelectedDate(""); // Reset selected date

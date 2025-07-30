@@ -12,8 +12,8 @@ import { useSpinner } from "@/contexts/SpinnerContext";
 
 const Products = () => {
     const { setIsLoading } = useSpinner();
-  const { query } = useSearch();
-  const { activePage, setTotalPage, skip, setTotalItem, limit } =
+  const { query,setQuery } = useSearch();
+  const { activePage, setTotalPage, skip, setTotalItem, limit,setActivePage } =
     usePagination();
   const [products, setProducts] = useState<Product[]>([]);
   
@@ -41,6 +41,11 @@ const Products = () => {
     document.body.scrollTop = 0;
     fetchProducts();
   }, [activePage, limit, query]);
+
+  useEffect(() => {
+    setActivePage(1);
+    setQuery("");
+  }, []);
   return (
     <div className="p-6 space-y-6 overflow-auto h-full w-full max-w-full">
       <PageHeader

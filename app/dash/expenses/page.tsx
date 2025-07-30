@@ -23,8 +23,8 @@ const Products = () => {
     setSelectedDate,
     setSelectedMonthDate,
   } = useDateFilter();
-  const { query } = useSearch();
-  const { activePage, setTotalPage, skip, limit } = usePagination();
+  const { query,setQuery } = useSearch();
+  const { activePage, setTotalPage, skip, limit,setActivePage } = usePagination();
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
   const fetchAvailableDates = async () => {
@@ -74,6 +74,8 @@ const Products = () => {
     }
   };
   useEffect(() => {
+    setActivePage(1);
+    setQuery("");
     return () => {
       setDateType("");
       setSelectedDate(""); // Reset selected date
